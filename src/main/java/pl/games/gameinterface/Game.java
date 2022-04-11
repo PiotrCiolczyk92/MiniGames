@@ -1,4 +1,4 @@
-package pl.games.gamelogic;
+package pl.games.gameinterface;
 
 public interface Game {
 

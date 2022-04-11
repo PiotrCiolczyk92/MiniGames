@@ -1,13 +1,11 @@
 package pl.games.lottogame.messageprinter;
 
-import pl.games.lottogame.numberreciver.PlayerNumbersReceiver;
-import pl.games.lottogame.numberreciver.RandomNumbersReceiver;
-
 public class MessagePrinter {
-    RandomNumbersReceiver randomNumbersReceiver;
-    PlayerNumbersReceiver playerNumbersReceiver;
+    private final int MAX_SCORE = 6;
 
-    public MessagePrinter() {}
+    public MessagePrinter() {
+
+    }
 
     public void pickOutOfRange() {
         System.out.println("Pick again number in range 1 to 99");
@@ -17,20 +15,36 @@ public class MessagePrinter {
         System.out.println("Number already chosen!");
     }
 
-    public void lotteryNumbersPrinter() {
-        System.out.println("Our lucky drawn numbers are: \n");
-        for (int number : this.randomNumbersReceiver.getDrawnNumbers()) {
-            System.out.print(number + " ");
-        }
+    public void playerStartToPickMessage() {
+        System.out.println("Please pick 6 different numbers from range 1 to 99");
     }
 
-    public void playerNumberPrinter() {
-        System.out.println("Player chosen numbers are: \n");
-        for (int number : this.playerNumbersReceiver.getPlayerNumbers()) {
-            System.out.print(number + " ");
-        }
+    public void luckyNumbersAnnouncement() {
+        System.out.println("...and the lucky numbers are: ");
     }
 
+    public void playerScoreAnnouncement() {
+        System.out.println("Your score is: ");
+    }
+
+    public void playerNumbersIntroduction() {
+        System.out.println("Your numbers are: ");
+    }
+
+    public void printNumbers(int[] numbers) {
+        for (int number : numbers) {
+            System.out.print(number + " ");
+        }
+        System.out.println("");
+    }
+
+    public void gameResultMessage(int playerScore) {
+        if (playerScore == MAX_SCORE) {
+            System.out.println("Congratulations! You hit jackpot!");
+        } else {
+            System.out.println("Maybe next time... Bye!");
+        }
+    }
 
 
 }

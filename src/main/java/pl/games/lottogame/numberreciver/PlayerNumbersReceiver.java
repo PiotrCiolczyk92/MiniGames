@@ -1,54 +1,43 @@
 package pl.games.lottogame.numberreciver;
 
+import pl.games.lottogame.logic.NumberContainChecker;
+import pl.games.lottogame.logic.RangeChecker;
 import pl.games.lottogame.messageprinter.MessagePrinter;
 
 import java.util.Scanner;
 
 public class PlayerNumbersReceiver {
-    private static final Scanner scanner = new Scanner(System.in);
-    private static MessagePrinter messagePrinter;
+    private final Scanner scanner = new Scanner(System.in);
     private static final int SIX_NUMBERS_TO_PICK = 6;
-    private static final int[] playerNumbers = new int[SIX_NUMBERS_TO_PICK];
-    private static int playerInput;
+    private final int[] playerNumbers;
+    private final MessagePrinter message;
+    private final NumberContainChecker check;
 
     public PlayerNumbersReceiver() {
+        this.playerNumbers = new int[SIX_NUMBERS_TO_PICK];
+        this.message = new MessagePrinter();
+        RangeChecker rangeCheck = new RangeChecker();
+        this.check = new NumberContainChecker();
     }
 
     public int[] getPlayerNumbers() {
         return playerNumbers;
     }
 
-    public static int[] receiveSixNumbersFromPlayer() {
+    public void receiveSixNumbersFromPlayer() {
         for (int i = 0; i < SIX_NUMBERS_TO_PICK; ) {
-            do {
-                playerInput = scanner.nextInt();
-                if (isAlreadyChosen(playerInput)) {
-                    messagePrinter.numberAlreadyChosen();
-                }
-            } while (isAlreadyChosen(playerInput));
-            if (isInRange(playerInput)) {
-                playerNumbers[i] += playerInput;
+            int playerInput;
+            playerInput = scanner.nextInt();
+            if (check.isNumberContainIn(playerInput, playerNumbers)) {
+                message.numberAlreadyChosen();
+            } else if (!RangeChecker.isInLotteryGameNumbersRange(playerInput)) {
+                message.pickOutOfRange();
+            } else {
+                this.playerNumbers[i] += playerInput;
                 i++;
-            } else
-                messagePrinter.pickOutOfRange();
-        }
-        scanner.close();
-        return playerNumbers;
-    }
-
-    public static boolean isInRange(int inputNumber) {
-        return inputNumber >= 1 && inputNumber <= 99;
-    }
-
-    public static boolean isAlreadyChosen(int inputNumber) {
-        for (int number : playerNumbers) {
-            if (inputNumber == number) {
-                return true;
-            } else if (number == 0) {
-                return false;
             }
         }
-        return false;
+        scanner.close();
     }
 
 }
